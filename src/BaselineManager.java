@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BaselineManager {
@@ -15,6 +16,21 @@ public class BaselineManager {
      */
     public void addFileToBaseline(String filePath, String fileHash) {
         baselineRegistry.put(filePath, fileHash);
+    }
+
+    /**
+     * Takes a list of file paths, hashes each one, and adds them to the registry.
+     */
+    public void createBaselineFromDirectory(List<String> filePaths) {
+        System.out.println("Calculating hashes for " + filePaths.size() + " files...");
+        for (String filePath : filePaths) {
+            try {
+                String hash = FileHasher.getSHA256Hash(filePath);
+                addFileToBaseline(filePath, hash);
+            } catch (Exception e) {
+                System.out.println("[!] ERROR: Could not hash file -> " + filePath);
+            }
+        }
     }
 
     /**
