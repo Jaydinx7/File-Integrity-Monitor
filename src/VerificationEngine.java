@@ -24,25 +24,24 @@ public class VerificationEngine {
             }
 
             try {
-                // Check 2: Does the hash match?
                 String currentHash = FileHasher.getSHA256Hash(filePath);
                 if (!currentHash.equals(expectedHash)) {
-                    System.out.println("[!] MODIFIED: " + filePath + " (Hashes do not match!)");
+                    System.out.println("\u001B[31m[!] MODIFIED: " + filePath + " (Hashes do not match!)\u001B[0m");
                     isTampered = true;
                 } else {
-                    System.out.println("[+] OK: " + filePath);
+                    System.out.println("\u001B[32m[+] OK: " + filePath + "\u001B[0m");
                 }
             } catch (Exception e) {
-                System.out.println("[!] ERROR: Could not read " + filePath);
+                System.out.println("\u001B[33m[!] ERROR: Could not read " + filePath + "\u001B[0m");
                 isTampered = true;
             }
         }
 
         System.out.println("------------------------------------------------");
         if (!isTampered) {
-            System.out.println("[SUCCESS] All files verified. No tampering detected.");
+            System.out.println("\u001B[32m[SUCCESS] All files verified. No tampering detected.\u001B[0m");
         } else {
-            System.out.println("[WARNING] Integrity check failed! System may be compromised.");
+            System.out.println("\u001B[31m[WARNING] Integrity check failed! System may be compromised.\u001B[0m");
         }
     }
 }
