@@ -16,6 +16,10 @@ public class FileHasher {
         byte[] buffer = new byte[4096];
         int bytesRead;
 
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            digest.update(buffer, 0, bytesRead);
+        }
+
         fis.close();
 
         byte[] hashBytes = digest.digest();
@@ -36,4 +40,4 @@ public class FileHasher {
         }
         return hexString.toString();
     }
-}
+}// tampering with the file
