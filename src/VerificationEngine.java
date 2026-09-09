@@ -4,21 +4,22 @@ import java.util.Map;
 public class VerificationEngine {
 
     /**
-     * Compares the baseline hashes against the current state of the files.
+     * Compares the baseline hashes against the current state of the files
+     * and flags any new untracked files in the directory.
      */
-    public static void verify(Map<String, String> baselineRegistry) {
+    public static void verify(Map<String, String> baselineRegistry, java.util.List<String> currentFiles) {
         boolean isTampered = false;
         System.out.println("Starting integrity verification...\n");
 
+        // Check baseline files for modifications or deletions
         for (Map.Entry<String, String> entry : baselineRegistry.entrySet()) {
             String filePath = entry.getKey();
             String expectedHash = entry.getValue();
 
             File file = new File(filePath);
 
-            // Check 1: Did someone delete the file?
             if (!file.exists()) {
-                System.out.println("[-] MISSING: " + filePath);
+                System.out.println("\u001B[31m[-] MISSING: " + filePath + "\u001B[0m");
                 isTampered = true;
                 continue;
             }
@@ -33,6 +34,14 @@ public class VerificationEngine {
                 }
             } catch (Exception e) {
                 System.out.println("\u001B[33m[!] ERROR: Could not read " + filePath + "\u001B[0m");
+                isTampered = true;
+            }
+        }
+
+        // Check the live directory for any new files not in the baseline
+        for (String liveFile : currentFiles) {
+            if (!baselineRegistry.containsKey(liveFile)) {
+                System.out.println("\u001B[33m[?] UNTRACKED: " + liveFile + " (New file detected!)\u001B[0m");
                 isTampered = true;
             }
         }
