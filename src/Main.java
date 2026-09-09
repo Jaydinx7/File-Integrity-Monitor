@@ -1,4 +1,5 @@
 import java.util.List;
+import java.io.File;
 
 public class Main {
 
@@ -33,9 +34,17 @@ public class Main {
                 manager.saveBaseline(baselineFile);
                 System.out.println(ANSI_GREEN+ "\n[+] SUCCESS: Baseline saved to " + baselineFile + ANSI_RESET);
             } else if (mode.equals("--check")) {
+                File baseline = new File(baselineFile);
+                if (!baseline.exists()) {
+                    System.out.println(ANSI_RED + "[!] ERROR: No baseline found. Please run --init first." + ANSI_RESET);
+                    return;
+                }
+
                 System.out.println("Loading baseline from: " + baselineFile);
                 manager.loadBaseline(baselineFile);
-                VerificationEngine.verify(manager.getRegistry());
+
+                List<String> currentFiles = DirectoryScanner.scan(directoryPath);
+                VerificationEngine.verify(manager.getRegistry(), currentFiles);
             } else {
                 System.out.println(ANSI_RED + "Invalid mode. Please use --init or --check."+ANSI_RESET);
             }
