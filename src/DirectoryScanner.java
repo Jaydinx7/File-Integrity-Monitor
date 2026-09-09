@@ -15,6 +15,7 @@ public class DirectoryScanner {
             return paths
                     .filter(Files::isRegularFile)
                     .filter(Files::isReadable)
+                    .filter(path -> !path.getFileName().toString().equals("baseline.txt"))
                     .map(Path::toString)
                     .collect(Collectors.toList());
         }
