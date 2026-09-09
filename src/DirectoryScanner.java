@@ -14,6 +14,7 @@ public class DirectoryScanner {
         try (Stream<Path> paths = Files.walk(Paths.get(directoryPath))) {
             return paths
                     .filter(Files::isRegularFile)
+                    .filter(Files::isReadable)
                     .map(Path::toString)
                     .collect(Collectors.toList());
         }
