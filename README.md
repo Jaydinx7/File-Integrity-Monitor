@@ -27,3 +27,5 @@ java Main --init <path_to_directory>
 ```bash
 java Main --check <path_to_directory>
 ```
+
+WTC-G78LK3JQ
