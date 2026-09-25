@@ -28,4 +28,7 @@ java Main --init <path_to_directory>
 java Main --check <path_to_directory>
 ```
 
+**Demo Video Link:**
+https://youtu.be/gimLLjQd4ig
+
 WTC-G78LK3JQ
